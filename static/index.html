@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutas Puebla</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <i class="fas fa-bus"></i>
+        <div>
+          <h1>Rutas Puebla</h1>
+          <p>Sistema de administración de paradas de transporte público</p>
+        </div>
+      </div>
+      <div id="estado-redis" class="badge badge-conectando">
+        <i class="fas fa-circle"></i> Verificando conexión…
+      </div>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <i class="fas fa-map-pin"></i>
+      <div>
+        <span id="total-paradas">0</span>
+        <label>Paradas registradas</label>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-route"></i>
+      <div>
+        <span id="total-activas">0</span>
+        <label>Paradas activas</label>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-database"></i>
+      <div>
+        <span>Redis Cloud</span>
+        <label>Base de datos</label>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- FORMULARIO -->
+    <section class="panel panel-form">
+      <div class="panel-header">
+        <h2 id="titulo-formulario"><i class="fas fa-plus-circle"></i> Registrar parada</h2>
+      </div>
+      <form id="form-parada">
+        <input type="hidden" id="parada-id" />
+
+        <div class="form-group">
+          <label for="nombre"><i class="fas fa-tag"></i> Nombre</label>
+          <input type="text" id="nombre" required placeholder="Ej. Parada Zócalo" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="colonia"><i class="fas fa-map-marker-alt"></i> Colonia</label>
+            <input type="text" id="colonia" required placeholder="Ej. Centro" />
+          </div>
+          <div class="form-group">
+            <label for="activa"><i class="fas fa-toggle-on"></i> Estado</label>
+            <select id="activa">
+              <option value="true">✅ Activa</option>
+              <option value="false">❌ Inactiva</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="latitud"><i class="fas fa-arrows-alt-v"></i> Latitud</label>
+            <input type="number" id="latitud" step="any" required placeholder="19.0431" />
+          </div>
+          <div class="form-group">
+            <label for="longitud"><i class="fas fa-arrows-alt-h"></i> Longitud</label>
+            <input type="number" id="longitud" step="any" required placeholder="-98.1937" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rutas"><i class="fas fa-road"></i> Rutas (separadas por coma)</label>
+          <input type="text" id="rutas" placeholder="Ruta 1, Ruta 15, Ruta 72" />
+        </div>
+
+        <div class="form-hint">
+          <i class="fas fa-info-circle"></i>
+          Haz clic en el mapa para capturar las coordenadas automáticamente.
+        </div>
+
+        <div class="botones">
+          <button type="submit" id="btn-guardar" class="btn btn-primary">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+          <button type="button" id="btn-cancelar" class="btn btn-secondary oculto">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+        </div>
+      </form>
+
+      <div id="mensaje"></div>
+    </section>
+
+    <!-- LISTA -->
+    <section class="panel panel-list">
+      <div class="panel-header">
+        <h2><i class="fas fa-list"></i> Paradas registradas</h2>
+        <button id="btn-recargar" class="btn btn-outline">
+          <i class="fas fa-sync-alt"></i> Actualizar
+        </button>
+      </div>
+
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="buscador" placeholder="Buscar parada por nombre o colonia…" />
+      </div>
+
+      <div id="lista-paradas"></div>
+    </section>
+
+    <!-- MAPA -->
+    <section class="panel panel-mapa">
+      <div class="panel-header">
+        <h2><i class="fas fa-map"></i> Mapa de paradas — Puebla</h2>
+        <span class="mapa-hint"><i class="fas fa-mouse-pointer"></i> Clic en el mapa para capturar coordenadas</span>
+      </div>
+      <div id="mapa"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Rutas Puebla &copy; 2026 · FastAPI + Redis Cloud + Leaflet</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
